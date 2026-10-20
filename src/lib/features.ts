@@ -1,4 +1,4 @@
-// Data statis Day 1 — akan digantikan data dinamis di hari-hari berikutnya.
+// Data statis untuk landing page — diperbarui mengikuti rencana program.
 
 export interface Fitur {
   judul: string;
@@ -32,6 +32,12 @@ export const fiturUnggulan: Fitur[] = [
     ikon: "📈",
   },
   {
+    judul: "Shortcut Cepat",
+    deskripsi:
+      'Catat pengeluaran rutin seperti "Parkir 2k" atau "Kopi 15k" dalam satu klik — preset bisa ditambah dan diubah sendiri.',
+    ikon: "⚡",
+  },
+  {
     judul: "API untuk Aplikasi Mobile",
     deskripsi:
       "Menyediakan REST API agar aplikasi mobile (Flutter) bisa mengambil data langsung dari web ini.",
@@ -48,38 +54,20 @@ export interface RencanaHari {
 export const rencana7Hari: RencanaHari[] = [
   {
     hari: 1,
-    judul: "Scaffold & Landing Page",
-    deskripsi: "Inisialisasi proyek Next.js dan halaman utama berbahasa Indonesia.",
+    judul: "Scaffold & Database",
+    deskripsi:
+      "Proyek Next.js + landing page; skema Prisma (User, Category, Transaction, Budget) live di Supabase Postgres; deploy Vercel.",
   },
   {
     hari: 2,
-    judul: "Database dengan Prisma",
-    deskripsi: "Skema database SQLite untuk transaksi dan kategori.",
+    judul: "Login & Pencatatan Transaksi",
+    deskripsi:
+      "Autentikasi NextAuth (login/register, proteksi route, profil); CRUD kategori & transaksi + filter & pencarian; shortcut pengeluaran 1-klik.",
   },
   {
     hari: 3,
-    judul: "Dashboard Ringkasan",
-    deskripsi: "Halaman dashboard dengan total pemasukan, pengeluaran, dan saldo.",
-  },
-  {
-    hari: 4,
-    judul: "CRUD Transaksi",
-    deskripsi: "Tambah, ubah, dan hapus catatan pemasukan serta pengeluaran.",
-  },
-  {
-    hari: 5,
-    judul: "Kategori & Filter",
-    deskripsi: "Kelola kategori, filter transaksi berdasarkan tanggal dan kategori.",
-  },
-  {
-    hari: 6,
-    judul: "Grafik & Laporan",
-    deskripsi: "Visualisasi tren keuangan dan laporan bulanan.",
-  },
-  {
-    hari: 7,
-    judul: "REST API + Autentikasi",
+    judul: "Dashboard & API Mobile",
     deskripsi:
-      "API ber-token agar aplikasi mobile minggu ke-2 bisa mengambil data dari server ini.",
+      "Dashboard ringkasan + analisa per kategori; budget & pemasukan tetap; REST API ber-token untuk aplikasi Flutter minggu ke-3.",
   },
 ];

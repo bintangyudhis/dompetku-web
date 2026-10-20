@@ -23,8 +23,8 @@ export default function Home() {
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-20 px-6 py-16">
         {/* Hero */}
         <section className="flex flex-col items-center gap-6 text-center">
-          <span className="rounded-full border border-amber-300 bg-amber-100 px-4 py-1 text-xs font-semibold text-amber-800 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-300">
-            🚧 Day 1 — Dalam pengembangan bertahap
+          <span className="rounded-full border border-emerald-300 bg-emerald-100 px-4 py-1 text-xs font-semibold text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+            ✅ Day 2 — Login, transaksi & kategori sudah live
           </span>
           <h1 className="max-w-2xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
             Kelola Keuangan Pribadimu dengan{" "}
@@ -45,7 +45,7 @@ export default function Home() {
               Mulai Mencatat
             </Link>
             <span className="text-xs font-medium uppercase tracking-widest text-zinc-500 dark:text-zinc-500">
-              ⏳ Fitur login segera hadir (Day 7)
+              🔐 Datamu aman & hanya bisa diakses kamu
             </span>
           </div>
         </section>
@@ -53,10 +53,10 @@ export default function Home() {
         {/* Fitur */}
         <section>
           <h2 className="text-center text-2xl font-bold tracking-tight">
-            Fitur yang Akan Dibangun
+            Fitur Unggulan
           </h2>
           <p className="mt-2 text-center text-zinc-600 dark:text-zinc-400">
-            Dikembangkan step-by-step selama 7 hari.
+            Dibangun bertahap — repo pertama dari program 4 minggu.
           </p>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {fiturUnggulan.map((fitur) => (
@@ -68,10 +68,10 @@ export default function Home() {
         {/* Rencana 7 hari */}
         <section>
           <h2 className="text-center text-2xl font-bold tracking-tight">
-            Rencana Pengembangan 7 Hari
+            Rencana 3 Hari — Repo dompetku-web
           </h2>
           <p className="mt-2 text-center text-zinc-600 dark:text-zinc-400">
-            Satu push setiap hari, satu fitur (atau lebih) setiap harinya.
+            Push setiap hari, beberapa fitur setiap harinya.
           </p>
           <ol className="mt-8 space-y-4">
             {rencana7Hari.map((rencana) => (
