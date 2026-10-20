@@ -11,3 +11,29 @@ export function formatRupiah(nilai: number): string {
     minimumFractionDigits: 0,
   }).format(nilai);
 }
+
+/**
+ * Format tanggal ke Bahasa Indonesia, mis. "20 Oktober 2026".
+ */
+export function formatTanggal(tanggal: Date | string): string {
+  const d = typeof tanggal === "string" ? new Date(tanggal) : tanggal;
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(d);
+}
+
+/**
+ * Format tanggal + jam ke Bahasa Indonesia, mis. "20 Okt 2026, 08.30".
+ */
+export function formatTanggalJam(tanggal: Date | string): string {
+  const d = typeof tanggal === "string" ? new Date(tanggal) : tanggal;
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(d);
+}
