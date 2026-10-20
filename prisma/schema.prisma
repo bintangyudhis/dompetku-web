@@ -9,27 +9,44 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(cuid())
+  id           String          @id @default(cuid())
   name         String
-  email        String        @unique
+  email        String          @unique
   password     String
-  createdAt    DateTime      @default(now())
+  createdAt    DateTime        @default(now())
   categories   Category[]
   transactions Transaction[]
   budgets      Budget[]
+  shortcuts    QuickShortcut[]
 }
 
 model Category {
-  id           String        @id @default(cuid())
+  id           String          @id @default(cuid())
   name         String
-  icon         String        @default("💰")
+  icon         String          @default("💰")
   type         String // INCOME | EXPENSE
   userId       String
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   transactions Transaction[]
   budgets      Budget[]
+  shortcuts    QuickShortcut[]
 
   @@unique([userId, name])
+}
+
+/// Preset pengeluaran 1-klik, mis. "Parkir 2k" — bisa ditambah/diubah pengguna.
+model QuickShortcut {
+  id         String    @id @default(cuid())
+  label      String
+  amount     Int // dalam rupiah, tanpa desimal
+  icon       String    @default("⚡")
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+
+  @@unique([userId, label])
 }
 
 model Transaction {

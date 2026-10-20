@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-import { DEFAULT_CATEGORIES } from "@/lib/seed";
+import { DEFAULT_CATEGORIES, DEFAULT_SHORTCUTS } from "@/lib/seed";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -58,8 +58,22 @@ export async function POST(req: Request) {
   });
 
   // Kategori bawaan untuk akun baru
-  await prisma.category.createMany({
-    data: DEFAULT_CATEGORIES.map((c) => ({ ...c, userId: user.id })),
+  const dibuat = await Promise.all(
+    DEFAULT_CATEGORIES.map((c) =>
+      prisma.category.create({ data: { ...c, userId: user.id } })
+    )
+  );
+  const kategoriId = new Map(dibuat.map((k) => [k.name, k.id]));
+
+  // Shortcut cepat bawaan (mis. "Parkir 2k")
+  await prisma.quickShortcut.createMany({
+    data: DEFAULT_SHORTCUTS.map((s) => ({
+      label: s.label,
+      amount: s.amount,
+      icon: s.icon,
+      categoryId: kategoriId.get(s.categoryName) ?? null,
+      userId: user.id,
+    })),
   });
 
   return NextResponse.json(
