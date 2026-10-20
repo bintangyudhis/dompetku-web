@@ -5,6 +5,9 @@ import { prisma } from "@/lib/prisma";
 import TransactionBoard, {
   type TransaksiItem,
 } from "@/components/TransactionBoard";
+import QuickShortcuts, {
+  type ShortcutItem,
+} from "@/components/QuickShortcuts";
 
 export const metadata = {
   title: "Transaksi — DompetKu",
@@ -54,25 +57,42 @@ export default async function TransaksiPage({
   }
   if (q) where.note = { contains: q, mode: "insensitive" };
 
-  const [rows, categories, ringkasan, totalSemua] = await Promise.all([
-    prisma.transaction.findMany({
-      where,
-      include: { category: { select: { id: true, name: true, icon: true } } },
-      orderBy: [{ date: "desc" }, { createdAt: "desc" }],
-      take: 100,
-    }),
-    prisma.category.findMany({
-      where: { userId },
-      orderBy: { name: "asc" },
-      select: { id: true, name: true, icon: true, type: true },
-    }),
-    prisma.transaction.groupBy({
-      by: ["type"],
-      where,
-      _sum: { amount: true },
-    }),
-    prisma.transaction.count({ where }),
-  ]);
+  const [rows, categories, ringkasan, totalSemua, shortcutRows] =
+    await Promise.all([
+      prisma.transaction.findMany({
+        where,
+        include: { category: { select: { id: true, name: true, icon: true } } },
+        orderBy: [{ date: "desc" }, { createdAt: "desc" }],
+        take: 100,
+      }),
+      prisma.category.findMany({
+        where: { userId },
+        orderBy: { name: "asc" },
+        select: { id: true, name: true, icon: true, type: true },
+      }),
+      prisma.transaction.groupBy({
+        by: ["type"],
+        where,
+        _sum: { amount: true },
+      }),
+      prisma.transaction.count({ where }),
+      prisma.quickShortcut.findMany({
+        where: { userId },
+        include: {
+          category: { select: { id: true, name: true, icon: true } },
+        },
+        orderBy: { createdAt: "asc" },
+      }),
+    ]);
+
+  const shortcuts: ShortcutItem[] = shortcutRows.map((s) => ({
+    id: s.id,
+    label: s.label,
+    amount: s.amount,
+    icon: s.icon,
+    categoryId: s.categoryId,
+    category: s.category,
+  }));
 
   const transactions: TransaksiItem[] = rows.map((t) => ({
     id: t.id,
@@ -95,6 +115,12 @@ export default async function TransaksiPage({
       <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
         Catat pemasukan & pengeluaran harianmu di sini.
       </p>
+      <div className="mt-6">
+        <QuickShortcuts
+          shortcuts={shortcuts}
+          kategoriPengeluaran={categories.filter((c) => c.type === "EXPENSE")}
+        />
+      </div>
       <div className="mt-6">
         <TransactionBoard
           transactions={transactions}
