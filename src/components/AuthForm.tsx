@@ -59,7 +59,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
         return;
       }
 
-      router.push("/transaksi");
+      router.push("/dashboard");
       router.refresh();
     } catch {
       setError("Terjadi kesalahan jaringan. Coba lagi.");

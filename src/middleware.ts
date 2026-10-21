@@ -9,5 +9,13 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ["/transaksi/:path*", "/kategori/:path*", "/profil/:path*"],
+  matcher: [
+    "/transaksi/:path*",
+    "/kategori/:path*",
+    "/profil/:path*",
+    "/dashboard/:path*",
+    "/budget/:path*",
+    "/rutin/:path*",
+    "/token-api/:path*",
+  ],
 };
