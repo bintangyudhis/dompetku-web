@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
+import ThemeToggle from "./ThemeToggle";
 
 interface NavbarProps {
   userName: string;
@@ -41,6 +42,7 @@ export default function Navbar({ userName }: NavbarProps) {
         </div>
 
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <span
             title={userName}
             className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white"

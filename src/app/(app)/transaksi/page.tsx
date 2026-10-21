@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import TransactionBoard, {
   type TransaksiItem,
 } from "@/components/TransactionBoard";
+import DataTransfer from "@/components/DataTransfer";
 import QuickShortcuts, {
   type ShortcutItem,
 } from "@/components/QuickShortcuts";
@@ -111,10 +112,17 @@ export default async function TransaksiPage({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-tight">💸 Transaksi</h1>
-      <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-        Catat pemasukan & pengeluaran harianmu di sini.
-      </p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">💸 Transaksi</h1>
+          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+            Catat pemasukan & pengeluaran harianmu di sini.
+          </p>
+        </div>
+        <DataTransfer
+          filter={{ type, categoryId, from, to, q }}
+        />
+      </div>
       <div className="mt-6">
         <QuickShortcuts
           shortcuts={shortcuts}
