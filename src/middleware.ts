@@ -16,6 +16,5 @@ export const config = {
     "/dashboard/:path*",
     "/budget/:path*",
     "/rutin/:path*",
-    "/token-api/:path*",
   ],
 };

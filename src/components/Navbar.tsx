@@ -12,7 +12,6 @@ const TAUTAN = [
   { href: "/kategori", label: "🏷️ Kategori" },
   { href: "/budget", label: "📉 Budget" },
   { href: "/rutin", label: "🔁 Rutin" },
-  { href: "/token-api", label: "🔑 Token API" },
   { href: "/profil", label: "👤 Profil" },
 ];
 

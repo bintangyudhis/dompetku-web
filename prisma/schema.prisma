@@ -19,7 +19,6 @@ model User {
   budgets      Budget[]
   shortcuts    QuickShortcut[]
   recurring    RecurringTemplate[]
-  apiTokens    ApiToken[]
 }
 
 model Category {
@@ -95,22 +94,6 @@ model RecurringTemplate {
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
-
-  @@index([userId])
-}
-
-/// Token akses untuk REST API publik (dipakai aplikasi Flutter).
-/// Yang disimpan hanya hash SHA-256 — token asli hanya ditampilkan sekali
-/// saat dibuat, lalu tidak bisa dilihat lagi.
-model ApiToken {
-  id         String    @id @default(cuid())
-  name       String // mis. "dompetku-app"
-  tokenHash  String    @unique
-  prefix     String // 8 karakter awal token, untuk identifikasi
-  lastUsedAt DateTime?
-  userId     String
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt  DateTime  @default(now())
 
   @@index([userId])
 }
