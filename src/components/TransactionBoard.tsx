@@ -112,7 +112,7 @@ export default function TransactionBoard({
           <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
             Pemasukan
           </p>
-          <p className="mt-1 text-lg font-bold text-emerald-600 dark:text-emerald-400">
+          <p className="mt-1 break-words text-base font-bold sm:text-lg text-emerald-600 dark:text-emerald-400">
             {formatRupiah(totalMasuk)}
           </p>
         </div>
@@ -120,7 +120,7 @@ export default function TransactionBoard({
           <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
             Pengeluaran
           </p>
-          <p className="mt-1 text-lg font-bold text-red-600 dark:text-red-400">
+          <p className="mt-1 break-words text-base font-bold sm:text-lg text-red-600 dark:text-red-400">
             {formatRupiah(totalKeluar)}
           </p>
         </div>
@@ -128,7 +128,7 @@ export default function TransactionBoard({
           <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
             Selisih
           </p>
-          <p className="mt-1 text-lg font-bold">{formatRupiah(totalMasuk - totalKeluar)}</p>
+          <p className="mt-1 break-words text-base font-bold sm:text-lg">{formatRupiah(totalMasuk - totalKeluar)}</p>
         </div>
       </div>
 

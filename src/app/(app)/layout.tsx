@@ -16,7 +16,7 @@ export default async function AppLayout({
   return (
     <div className="flex min-h-full flex-1 flex-col bg-zinc-50 font-sans text-zinc-900 dark:bg-black dark:text-zinc-50">
       <Navbar userName={session?.user?.name ?? "Pengguna"} />
-      <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-8">
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
         {children}
       </main>
       <footer className="border-t border-zinc-200 py-6 dark:border-zinc-800">
