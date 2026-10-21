@@ -48,9 +48,7 @@ dari program streak GitHub 4 minggu (7 repo, push setiap hari).
 - 🔑 **REST API untuk aplikasi mobile** — aplikasi HP masuk dengan email +
   kata sandi yang sama seperti web (satu akun, satu database) dan menerima
   **token sesi** (JWT); permintaan data membawa header
-  `Authorization: Bearer <token sesi>` dan `x-api-key: <API key aplikasi>`
-  (API key hanya tertanam di code aplikasi + env server — bukan token buatan
-  pengguna dan tidak ditampilkan di website):
+  `Authorization: Bearer <token sesi>` pada setiap permintaan data:
   - `POST /api/public/auth/register` — daftar akun dari aplikasi
   - `POST /api/public/auth/login` — masuk, menerima token sesi
   - `GET /api/public/summary` — saldo & ringkasan bulan ini
