@@ -40,7 +40,7 @@ export const fiturUnggulan: Fitur[] = [
   {
     judul: "API untuk Aplikasi Mobile",
     deskripsi:
-      "Menyediakan REST API agar aplikasi mobile (Flutter) bisa mengambil data langsung dari web ini.",
+      "Aplikasi mobile (Flutter) terhubung ke data yang sama lewat REST API — cukup masuk dengan akun yang sama.",
     ikon: "🔌",
   },
 ];

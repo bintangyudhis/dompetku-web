@@ -1,6 +1,6 @@
 # 💰 DompetKu
 
-**DompetKu** adalah aplikasi web pencatat keuangan pribadi berbahasa Indonesia. Catat pemasukan dan pengeluaran harian, pantau arus kas lewat dashboard, atur budget per kategori, daftarkan pemasukan rutin, dan hubungkan aplikasi lain lewat REST API ber-token — semuanya dalam satu tempat.
+**DompetKu** adalah aplikasi web pencatat keuangan pribadi berbahasa Indonesia. Catat pemasukan dan pengeluaran harian, pantau arus kas lewat dashboard, atur budget per kategori, daftarkan pemasukan rutin, dan hubungkan aplikasi mobile lewat REST API dengan akun yang sama — semuanya dalam satu tempat.
 
 Proyek ini dibangun **bertahap selama 3 hari** (19–21 Oktober 2026) — repo pertama
 dari program streak GitHub 4 minggu (7 repo, push setiap hari).
@@ -23,7 +23,7 @@ dari program streak GitHub 4 minggu (7 repo, push setiap hari).
 | ---- | ----- | ------ |
 | 1 | Scaffold Next.js + landing page; skema Prisma (User, Category, Transaction, Budget) live di Supabase; deploy Vercel | ✅ |
 | 2 | Login & register (NextAuth), proteksi route, profil & logout; CRUD kategori & transaksi + filter & pencarian; shortcut pengeluaran 1-klik | ✅ |
-| 3 | Dashboard + analisa per kategori; budget & pemasukan tetap; export/import CSV; dark mode; REST API ber-token untuk aplikasi Flutter | ✅ |
+| 3 | Dashboard + analisa per kategori; budget & pemasukan tetap; export/import CSV; dark mode; REST API untuk aplikasi Flutter (login + token sesi) | ✅ |
 
 ## ✨ Fitur
 
@@ -45,9 +45,14 @@ dari program streak GitHub 4 minggu (7 repo, push setiap hari).
   1–28); satu klik "Terapkan bulan ini" menerbitkannya jadi transaksi
   (idempoten — tidak dobel).
 - 🌙 **Dark mode** — toggle manual di navbar, tersimpan di localStorage.
-- 🔑 **REST API ber-token** — buat token di halaman Token API (disimpan sebagai
-  hash SHA-256, ditampilkan sekali saja), lalu akses data lewat endpoint
-  publik dengan header `Authorization: Bearer <token>`:
+- 🔑 **REST API untuk aplikasi mobile** — aplikasi HP masuk dengan email +
+  kata sandi yang sama seperti web (satu akun, satu database) dan menerima
+  **token sesi** (JWT); permintaan data membawa header
+  `Authorization: Bearer <token sesi>` dan `x-api-key: <API key aplikasi>`
+  (API key hanya tertanam di code aplikasi + env server — bukan token buatan
+  pengguna dan tidak ditampilkan di website):
+  - `POST /api/public/auth/register` — daftar akun dari aplikasi
+  - `POST /api/public/auth/login` — masuk, menerima token sesi
   - `GET /api/public/summary` — saldo & ringkasan bulan ini
   - `GET /api/public/transactions?limit=50&type=EXPENSE` — daftar transaksi
   - `POST /api/public/transactions` — catat transaksi
@@ -90,7 +95,7 @@ npm run lint    # cek lint dengan ESLint
 ## 🗄️ Database
 
 Skema Prisma (`prisma/schema.prisma`): `User`, `Category`, `Transaction`,
-`Budget`, `QuickShortcut`, `RecurringTemplate`, `ApiToken`.
+`Budget`, `QuickShortcut`, `RecurringTemplate`.
 
 Migrasi SQL di `prisma/migrations/` (nama unik per repo karena beberapa repo
 program ini berbagi satu project Supabase):
@@ -101,6 +106,7 @@ program ini berbagi satu project Supabase):
 | `0002_day2_shortcuts` | QuickShortcut |
 | `0003_day3_rutin` | RecurringTemplate |
 | `0004_day3_api_token` | ApiToken |
+| `0005_drop_api_token` | (mencabut ApiToken — auth aplikasi diganti login + token sesi) |
 
 ## 📁 Struktur Folder
 
@@ -113,7 +119,6 @@ src/
 │   │   ├── kategori/page.tsx   # CRUD kategori
 │   │   ├── budget/page.tsx     # Budget per kategori + progress
 │   │   ├── rutin/page.tsx      # Pemasukan tetap + terapkan bulanan
-│   │   ├── token-api/page.tsx  # Kelola token + dokumentasi REST API
 │   │   ├── profil/page.tsx     # Profil & statistik akun
 │   │   └── layout.tsx          # Layout + navbar aplikasi
 │   ├── api/
@@ -127,7 +132,6 @@ src/
 │   │   ├── recurring/          # CRUD pemasukan rutin + terapkan
 │   │   ├── export/transactions # Unduh CSV
 │   │   ├── import/transactions # Impor CSV (JSON)
-│   │   ├── tokens/             # Buat/daftar/cabut token API
 │   │   └── public/             # REST API publik (Bearer token)
 │   ├── login/page.tsx          # Halaman masuk
 │   ├── register/page.tsx       # Halaman daftar
@@ -145,4 +149,4 @@ prisma/
 ## 🔮 Rencana Lanjutan
 
 - **Minggu ke-3 program (26–28 Okt):** aplikasi mobile Flutter `dompetku-app`
-  yang mengambil data lewat REST API ber-token web ini.
+  yang mengambil data lewat REST API web ini — masuk dengan akun yang sama.
