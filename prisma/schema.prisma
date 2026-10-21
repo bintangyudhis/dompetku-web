@@ -18,6 +18,7 @@ model User {
   transactions Transaction[]
   budgets      Budget[]
   shortcuts    QuickShortcut[]
+  recurring    RecurringTemplate[]
 }
 
 model Category {
@@ -30,6 +31,7 @@ model Category {
   transactions Transaction[]
   budgets      Budget[]
   shortcuts    QuickShortcut[]
+  recurring    RecurringTemplate[]
 
   @@unique([userId, name])
 }
@@ -75,4 +77,23 @@ model Budget {
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, categoryId, month, year])
+}
+
+/// Pemasukan berulang tiap bulan (mis. gaji) — diterbitkan jadi transaksi
+/// lewat tombol "Terapkan bulan ini".
+model RecurringTemplate {
+  id          String   @id @default(cuid())
+  label       String // mis. "Gaji bulanan"
+  amount      Int // dalam rupiah, tanpa desimal
+  note        String?
+  dayOfMonth  Int      @default(1) // tanggal terbit tiap bulan (1-28)
+  active      Boolean  @default(true)
+  lastApplied String? // "YYYY-MM" terakhir diterbitkan
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
 }
