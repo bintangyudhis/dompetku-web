@@ -1,4 +1,4 @@
-// Data statis untuk landing page — diperbarui mengikuti rencana program.
+// Data statis untuk landing page.
 
 export interface Fitur {
   judul: string;
@@ -45,29 +45,3 @@ export const fiturUnggulan: Fitur[] = [
   },
 ];
 
-export interface RencanaHari {
-  hari: number;
-  judul: string;
-  deskripsi: string;
-}
-
-export const rencana7Hari: RencanaHari[] = [
-  {
-    hari: 1,
-    judul: "Scaffold & Database",
-    deskripsi:
-      "Proyek Next.js + landing page; skema Prisma (User, Category, Transaction, Budget) live di Supabase Postgres; deploy Vercel.",
-  },
-  {
-    hari: 2,
-    judul: "Login & Pencatatan Transaksi",
-    deskripsi:
-      "Autentikasi NextAuth (login/register, proteksi route, profil); CRUD kategori & transaksi + filter & pencarian; shortcut pengeluaran 1-klik.",
-  },
-  {
-    hari: 3,
-    judul: "Dashboard & API Mobile",
-    deskripsi:
-      "Dashboard ringkasan + analisa per kategori; budget & pemasukan tetap; REST API ber-token untuk aplikasi Flutter minggu ke-3.",
-  },
-];

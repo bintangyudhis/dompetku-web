@@ -1,6 +1,6 @@
 import Link from "next/link";
 import FeatureCard from "@/components/FeatureCard";
-import { fiturUnggulan, rencana7Hari } from "@/lib/features";
+import { fiturUnggulan } from "@/lib/features";
 
 export default function Home() {
   return (
@@ -23,9 +23,6 @@ export default function Home() {
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-20 px-6 py-16">
         {/* Hero */}
         <section className="flex flex-col items-center gap-6 text-center">
-          <span className="rounded-full border border-emerald-300 bg-emerald-100 px-4 py-1 text-xs font-semibold text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
-            ✅ Day 2 — Login, transaksi & kategori sudah live
-          </span>
           <h1 className="max-w-2xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
             Kelola Keuangan Pribadimu dengan{" "}
             <span className="text-emerald-600 dark:text-emerald-400">
@@ -56,7 +53,8 @@ export default function Home() {
             Fitur Unggulan
           </h2>
           <p className="mt-2 text-center text-zinc-600 dark:text-zinc-400">
-            Dibangun bertahap — repo pertama dari program 4 minggu.
+            Semua yang kamu butuhkan untuk mencatat dan memahami keuangan
+            harianmu.
           </p>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {fiturUnggulan.map((fitur) => (
@@ -65,39 +63,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Rencana 7 hari */}
-        <section>
-          <h2 className="text-center text-2xl font-bold tracking-tight">
-            Rencana 3 Hari — Repo dompetku-web
-          </h2>
-          <p className="mt-2 text-center text-zinc-600 dark:text-zinc-400">
-            Push setiap hari, beberapa fitur setiap harinya.
-          </p>
-          <ol className="mt-8 space-y-4">
-            {rencana7Hari.map((rencana) => (
-              <li
-                key={rencana.hari}
-                className="flex gap-4 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950"
-              >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white">
-                  {rencana.hari}
-                </span>
-                <div>
-                  <h3 className="font-semibold">{rencana.judul}</h3>
-                  <p className="mt-1 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                    {rencana.deskripsi}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
       </main>
 
       {/* Footer */}
       <footer className="border-t border-zinc-200 py-8 dark:border-zinc-800">
         <p className="text-center text-sm text-zinc-500 dark:text-zinc-500">
-          DompetKu © 2026 — Dibangun dengan Next.js, satu commit setiap hari.
+          DompetKu © 2026 — Catat keuangan pribadi, tanpa ribet.
         </p>
       </footer>
     </div>
