@@ -1,23 +1,15 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-import { buatTokenSesi, kunciAplikasiValid } from "@/lib/api-auth";
+import { buatTokenSesi } from "@/lib/api-auth";
 
 /**
  * POST /api/public/auth/login — masuk untuk aplikasi mobile.
  * Body: { email, password } — akun yang sama dengan website (satu database).
- * Header: `x-api-key: <API key aplikasi>` (diperiksa bila MOBILE_API_KEY terpasang).
  * Sukses: { token, user } — token sesi (JWT, 30 hari) dipakai aplikasi pada
  * setiap permintaan berikutnya sebagai `Authorization: Bearer <token>`.
  */
 export async function POST(req: Request) {
-  if (!kunciAplikasiValid(req)) {
-    return NextResponse.json(
-      { error: "API key aplikasi tidak valid." },
-      { status: 401 }
-    );
-  }
-
   let body: { email?: string; password?: string };
   try {
     body = await req.json();
