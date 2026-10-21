@@ -1,6 +1,6 @@
 # 💰 DompetKu
 
-**DompetKu** adalah aplikasi web pencatat keuangan pribadi berbahasa Indonesia. Catat pemasukan dan pengeluaran harian, pantau arus kas, dan rencanakan keuangan dengan lebih baik — semuanya dalam satu tempat.
+**DompetKu** adalah aplikasi web pencatat keuangan pribadi berbahasa Indonesia. Catat pemasukan dan pengeluaran harian, pantau arus kas lewat dashboard, atur budget per kategori, daftarkan pemasukan rutin, dan hubungkan aplikasi lain lewat REST API ber-token — semuanya dalam satu tempat.
 
 Proyek ini dibangun **bertahap selama 3 hari** (19–21 Oktober 2026) — repo pertama
 dari program streak GitHub 4 minggu (7 repo, push setiap hari).
@@ -11,10 +11,11 @@ dari program streak GitHub 4 minggu (7 repo, push setiap hari).
 
 - [Next.js 16](https://nextjs.org/) (App Router, Cache Components)
 - [React 19](https://react.dev/)
-- [Tailwind CSS v4](https://tailwindcss.com/)
+- [Tailwind CSS v4](https://tailwindcss.com/) (dark mode manual via class)
 - TypeScript
 - [NextAuth.js v4](https://next-auth.js.org/) (Credentials + JWT) + bcryptjs
 - Prisma v6 + Supabase Postgres (via connection pooler)
+- [Recharts](https://recharts.github.io/) untuk grafik dashboard
 
 ## 🗓️ Rencana 3 Hari
 
@@ -22,18 +23,35 @@ dari program streak GitHub 4 minggu (7 repo, push setiap hari).
 | ---- | ----- | ------ |
 | 1 | Scaffold Next.js + landing page; skema Prisma (User, Category, Transaction, Budget) live di Supabase; deploy Vercel | ✅ |
 | 2 | Login & register (NextAuth), proteksi route, profil & logout; CRUD kategori & transaksi + filter & pencarian; shortcut pengeluaran 1-klik | ✅ |
-| 3 | Dashboard + analisa per kategori; budget & pemasukan tetap; REST API ber-token untuk aplikasi Flutter | ⏳ |
+| 3 | Dashboard + analisa per kategori; budget & pemasukan tetap; export/import CSV; dark mode; REST API ber-token untuk aplikasi Flutter | ✅ |
 
-## ✨ Fitur (Day 2)
+## ✨ Fitur
 
+- 📊 **Dashboard** — kartu saldo/pemasukan/pengeluaran/sisa bulan ini, grafik
+  arus kas 30 hari, analisa pengeluaran per kategori (pie chart + persen),
+  dan 5 transaksi terbaru.
 - 🔐 **Autentikasi** — daftar & masuk dengan email + kata sandi (hash bcrypt);
   akun baru otomatis dapat 10 kategori & 4 shortcut bawaan.
 - 💸 **Transaksi** — tambah/ubah/hapus pemasukan & pengeluaran; filter tipe,
-  kategori & rentang tanggal; pencarian catatan.
+  kategori & rentang tanggal; pencarian catatan; **export & import CSV**
+  (export mengikuti filter aktif; import membuat kategori baru otomatis).
 - 🏷️ **Kategori** — tambah/ubah/hapus; dikelompokkan pemasukan vs pengeluaran;
   kategori yang masih dipakai transaksi tidak bisa dihapus.
 - ⚡ **Shortcut cepat** — preset pengeluaran 1-klik seperti "Parkir 2k";
   bisa ditambah, diubah, dan dihapus sendiri.
+- 📉 **Budget** — batas pengeluaran per kategori per bulan; progress bar +
+  badge peringatan saat pemakaian mencapai **80%** dan **100%**.
+- 🔁 **Pemasukan rutin** — daftarkan gaji/pemasukan berulang (tanggal terbit
+  1–28); satu klik "Terapkan bulan ini" menerbitkannya jadi transaksi
+  (idempoten — tidak dobel).
+- 🌙 **Dark mode** — toggle manual di navbar, tersimpan di localStorage.
+- 🔑 **REST API ber-token** — buat token di halaman Token API (disimpan sebagai
+  hash SHA-256, ditampilkan sekali saja), lalu akses data lewat endpoint
+  publik dengan header `Authorization: Bearer <token>`:
+  - `GET /api/public/summary` — saldo & ringkasan bulan ini
+  - `GET /api/public/transactions?limit=50&type=EXPENSE` — daftar transaksi
+  - `POST /api/public/transactions` — catat transaksi
+  - `GET /api/public/categories?type=INCOME` — daftar kategori
 - 👤 **Profil** — info akun, statistik transaksi & total pengeluaran, logout.
 
 ## 🚀 Cara Menjalankan
@@ -69,14 +87,33 @@ npm run lint    # cek lint dengan ESLint
 > yang membatalkan build Vercel bila pesan commit mengandung `[skip-vercel]`.
 > Deploy resmi dilakukan sekali sehari lewat commit kosong `Day N: deploy`.
 
+## 🗄️ Database
+
+Skema Prisma (`prisma/schema.prisma`): `User`, `Category`, `Transaction`,
+`Budget`, `QuickShortcut`, `RecurringTemplate`, `ApiToken`.
+
+Migrasi SQL di `prisma/migrations/` (nama unik per repo karena beberapa repo
+program ini berbagi satu project Supabase):
+
+| Migrasi | Isi |
+| ------- | --- |
+| `0001_init` | User, Category, Transaction, Budget |
+| `0002_day2_shortcuts` | QuickShortcut |
+| `0003_day3_rutin` | RecurringTemplate |
+| `0004_day3_api_token` | ApiToken |
+
 ## 📁 Struktur Folder
 
 ```
 src/
 ├── app/
 │   ├── (app)/                  # Area aplikasi (terproteksi middleware)
+│   │   ├── dashboard/page.tsx  # Ringkasan + grafik + analisa kategori
 │   │   ├── transaksi/page.tsx  # Daftar + filter + CRUD transaksi & shortcut
 │   │   ├── kategori/page.tsx   # CRUD kategori
+│   │   ├── budget/page.tsx     # Budget per kategori + progress
+│   │   ├── rutin/page.tsx      # Pemasukan tetap + terapkan bulanan
+│   │   ├── token-api/page.tsx  # Kelola token + dokumentasi REST API
 │   │   ├── profil/page.tsx     # Profil & statistik akun
 │   │   └── layout.tsx          # Layout + navbar aplikasi
 │   ├── api/
@@ -84,23 +121,28 @@ src/
 │   │   ├── auth/register/      # API pendaftaran + seed data bawaan
 │   │   ├── categories/         # CRUD kategori
 │   │   ├── transactions/       # CRUD transaksi + filter & pencarian
-│   │   └── shortcuts/          # CRUD shortcut + pencatatan 1-klik
+│   │   ├── shortcuts/          # CRUD shortcut + pencatatan 1-klik
+│   │   ├── dashboard/          # Ringkasan untuk dashboard
+│   │   ├── budgets/            # CRUD budget + realisasi
+│   │   ├── recurring/          # CRUD pemasukan rutin + terapkan
+│   │   ├── export/transactions # Unduh CSV
+│   │   ├── import/transactions # Impor CSV (JSON)
+│   │   ├── tokens/             # Buat/daftar/cabut token API
+│   │   └── public/             # REST API publik (Bearer token)
 │   ├── login/page.tsx          # Halaman masuk
 │   ├── register/page.tsx       # Halaman daftar
 │   └── page.tsx                # Landing page
-├── components/                 # Komponen UI (form, papan transaksi, dsb.)
-├── lib/                        # auth, prisma, format, validasi & seed
+├── components/                 # Komponen UI (board, grafik, form, dsb.)
+├── lib/                        # auth, prisma, format, waktu (zona Jakarta)
 ├── middleware.ts               # Proteksi route via NextAuth
 └── types/next-auth.d.ts        # Augmentasi tipe sesi
 
 prisma/
-├── schema.prisma               # User, Category, Transaction, Budget, QuickShortcut
+├── schema.prisma               # Skema database
 └── migrations/                 # Migrasi SQL (dijalankan otomatis saat deploy)
 ```
 
 ## 🔮 Rencana Lanjutan
 
-- **Day 3 (21 Okt):** dashboard ringkasan + analisa per kategori, budget,
-  pemasukan tetap, REST API ber-token.
-- **Minggu ke-3 program:** aplikasi mobile Flutter yang mengambil data lewat
-  REST API web ini.
+- **Minggu ke-3 program (26–28 Okt):** aplikasi mobile Flutter `dompetku-app`
+  yang mengambil data lewat REST API ber-token web ini.
