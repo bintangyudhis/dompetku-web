@@ -148,3 +148,9 @@ prisma/
 
 - **Minggu ke-3 program (26–28 Okt):** aplikasi mobile Flutter `dompetku-app`
   yang mengambil data lewat REST API web ini — masuk dengan akun yang sama.
+
+## Catatan performa (23 Oktober 2026)
+
+- Fungsi Vercel dipindah ke region Singapura (sin1) agar sejajar dengan database Supabase; sebelumnya fungsi berjalan di region default Amerika sehingga setiap query menyeberangi samudra.
+- Ditambah `loading.tsx` pada grup halaman aplikasi, sehingga navigasi menu langsung menampilkan kerangka halaman selama data dimuat.
+- Hasil pengukuran ulang malam yang sama: halaman /transaksi turun dari 6,9 detik menjadi sekitar 1,2 detik; API ringkasan dari 3,1 detik menjadi sekitar 0,9 detik.
