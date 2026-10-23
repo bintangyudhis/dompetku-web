@@ -1,4 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "ignoreCommand": "git log -1 --pretty=format:%s | grep -qF \"[skip-vercel]\" && exit 0 || exit 1"
+  "ignoreCommand": "git log -1 --pretty=format:%s | grep -qF \"[skip-vercel]\" && exit 0 || exit 1",
+  "regions": ["sin1"]
 }
