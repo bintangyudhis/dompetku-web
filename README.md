@@ -154,3 +154,5 @@ prisma/
 - Fungsi Vercel dipindah ke region Singapura (sin1) agar sejajar dengan database Supabase; sebelumnya fungsi berjalan di region default Amerika sehingga setiap query menyeberangi samudra.
 - Ditambah `loading.tsx` pada grup halaman aplikasi, sehingga navigasi menu langsung menampilkan kerangka halaman selama data dimuat.
 - Hasil pengukuran ulang malam yang sama: halaman /transaksi turun dari 6,9 detik menjadi sekitar 1,2 detik; API ringkasan dari 3,1 detik menjadi sekitar 0,9 detik.
+- Halaman kategori ikut turun dari 1,9 detik menjadi sekitar 1,1 detik.
+-
